@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="A web app that allows you to build a Spotify playlist based on your favourite artist, that will match your running cadence.">
+	<meta name="author" content="James Fenning">
+	<title>Tempo Training</title>
+	<link rel="icon" href="../../static/img/logo.png">
+	<link rel="stylesheet" href="../../static/css/style.css">
+</head>
+<body>
+	<div class="wrapper">
+		<div class="description">
+			<h2 class="title">Tempo Training</h2>
+			<p class="explination">Create your new running playlist featuring songs based on your favourite artist, with BPM that will match your step cadence. Simply enter your favourite artist and your running cadence (in steps per minute) then click Make Playlist</p>
+			<form method="get" action="/your-playlist">
+				<div class="field">
+					<input type="text" name="artist_to_search" placeholder="Ex : Mac Miller" required>
+					<input type="type" name="bpm_to_search" placeholder="175" required>
+				</div>
+				<input type="submit" name="submit" id="submit" value="Make Playlist" class="button">
+			</form>
+		</div>
+	</div>
+</body>
+</html>

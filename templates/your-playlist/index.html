@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="A web app that allows you to build a Spotify playlist based on your favourite artist, that will match your running cadence.">
+	<meta name="author" content="James Fenning">
+	<title>Tempo Training</title>
+	<link rel="icon" href="../../static/img/logo.png">
+	<link rel="stylesheet" href="../../static/css/style.css">
+</head>
+<body>
+	<div class="playlist-wrapper">
+		<div class="description playlist-description">
+			<h2>Here's Your Playlist</h2>
+			<p>Your playlist full of popular songs by {{ artist_name }} and similar artists. <br> BPM should be equal to, or half of your running cadence. Enjoy! 
+			<br /><br><a href="{{ url_for('index') }}">Click here to make another playlist.</a></p>
+			<!--Change player theme by pasting or removing &theme=white at the end of playlist url. -->
+			<iframe src="{{ playlist_iframe_href }}" width="100%" height="300" frameborder="0" allowtransparency="true"></iframe>
+		</div>
+		<div class="image">
+			<img src="{{ artist_image_url }}" alt="image of artist you searched for" />
+		</div>
+	</div>
+</body>
+</html>

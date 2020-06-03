@@ -1,0 +1,121 @@
+/* montserrat-regular - latin */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Montserrat Regular'), local('Montserrat-Regular'),
+       url('../fonts/montserrat-v14-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/montserrat-v14-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* montserrat-700 - latin */
+@font-face {
+  font-family: 'Montserrat-Bold';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Montserrat Bold'), local('Montserrat-Bold'),
+       url('../fonts/montserrat-v14-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/montserrat-v14-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+body {
+	font-family: 'Montserrat', Arial, sans-serif;
+}
+.wrapper{
+	/*position: absolute;*/
+	background:  url(../img/run.jpg);
+	background-position: top right;
+	min-height: 100vh;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+/*==========================*/
+/*--Description & form box--*/
+/*==========================*/
+
+.description{
+	width: 40vw;
+	background: rgba(0,0,0,0.6);
+	position: fixed;
+	left: 10vw;
+	top: 8vh;
+	border-radius: 10px;
+	box-shadow: 5px 5px 5px rgba(0,0,0);
+	color: #fff;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+}
+@media screen and (max-width: 750px) {
+    .description {
+        width: 70vw !important;
+    }
+}
+
+.description h2{
+	margin-bottom: .3rem;
+}
+.description p{
+	margin-top: .3rem;
+}
+.explination{
+	padding: 0 10px;
+	text-align: left;
+	font-weight: 500;
+}
+
+/*==========================*/
+/*------Input & button------*/
+/*==========================*/
+
+.field{
+	margin-top: 1rem;
+}
+.field input{
+	outline: none;
+	font-family: 'Montserrat', Arial, sans-serif;
+	border: 1px solid rgba(0,0,0,.8);
+	border-radius: 2rem;
+	color: #000;
+	font-weight: 700;
+	padding: .3rem 0 .3rem .8rem;
+}
+.field input::placeholder{
+	color: #757575;
+	font-weight: 800;
+}
+.button{
+	margin: 1rem 0;
+	cursor: pointer;
+	border: 0;
+	padding: .8rem 2rem;
+	border-radius: 2rem;
+	color: inherit;
+	background: #000;
+	text-transform: uppercase;
+	letter-spacing: 0.1rem;
+	font-family: 'Montserrat', Arial, sans-serif;
+}
+.button:hover{
+	background: #1DB954;
+	transition-duration: 0.2s;
+}
+#login{
+	width: 5rem;
+	text-decoration: none;
+	align-self: center;
+}
+
+/*==========================*/
+/*-------Playlist Page------*/
+/*==========================*/
+
+.image{
+	float: right;
+}
+.playlist-description{
+	left: 5vw;
+}
+.description a{
+	color: inherit;
+	font-weight: 550;
+}
