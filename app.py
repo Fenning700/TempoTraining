@@ -148,85 +148,104 @@ def show_playlist():
 	playlist = sp.user_playlist_create(username, playlist_name)
 	playlist_id = playlist["id"]
 	
+	def tempo_check(tempo):
+		# Check tempo against desired BPM (within range as Spotify returns tempo to 3 decimal places) & add suitable tracks
+		if (tempo > (desired_bpm-1.5) and tempo < (desired_bpm+1.5)) or (tempo*2 > (desired_bpm-1.5) and tempo*2 < (desired_bpm+1.5)):
+			list_of_tracks.append(track["id"])	
 
 	# Make list of tracks
 	list_of_tracks = []
 	
-	# Add artist top tracks to list of tracks
-	# Be mindful of number of tracks b/c API limits
+	# Get artist top tracks & add to list of top tracks
 	artist_top_tracks = sp.artist_top_tracks(artist_uri)
-	song_count = 0
-	for track in artist_top_tracks["tracks"]:
-		if song_count < 5:
-			# Check tempo of track before adding to list of tracks
-			track_info = sp.audio_features(track["id"])
-			tempo = track_info[0]['tempo']
-			if (tempo > (desired_bpm-3) and tempo < (desired_bpm+3)) or (tempo*2 > (desired_bpm-3) and tempo*2 < (desired_bpm+3)):
-				list_of_tracks.append(track["id"])
-				song_count += 1
-
-	# Make a list of artist top track ids
 	top_tracks = artist_top_tracks["tracks"]
-	track_recommendations = []
+
+	list_of_artist_top_tracks = []
 	for track in top_tracks:
-		track_recommendations.append(track['id'])
-	 
-	top5 = track_recommendations[:5]
-	top10 = track_recommendations[6:10]
+		list_of_artist_top_tracks.append(track['id'])
+	# Get audio features for all tracks on list
+	top_track_features = sp.audio_features(tracks=list_of_artist_top_tracks)
+	for item in top_track_features:
+		# Get tempo and track id from each individual track in list
+		tempo = item['tempo']
+		track_id = item['id']
+		# Run tempo_check function to see if track tempo fits required BPM
+		tempo_check(tempo)
 
-	# Define funtion for getting recommendations based on top tracks (max 5 track seeds)
-	def get_recommendations(tracks):
-		recommendations = sp.recommendations(seed_tracks = tracks, limit=100)
-		var = recommendations['tracks']
-		list_of_100_recommendations = []
-		for track in var:
-			list_of_100_recommendations.append(track['id'])
-		# Create a list of audio features for 100 recommended tracks
-		multiple_features = sp.audio_features(tracks=list_of_100_recommendations)
-		for item in multiple_features:
-			tempo = item['tempo']
-			track_id = item['id']
-			# If tempo is within range, add id to the playlist
-			if (tempo > (desired_bpm-3) and tempo < (desired_bpm+3)) or (tempo*2 > (desired_bpm-3) and tempo*2 < (desired_bpm+3)):
-				list_of_tracks.append(track_id)
-
+	# Grab slices of track IDs to feed into get_recommendations function
+	top3 = list_of_artist_top_tracks[:3]
+	top5 = list_of_artist_top_tracks[4:5]
+	top7 = list_of_artist_top_tracks[6:7]
+	top10 = list_of_artist_top_tracks[8:10]
 
 	# Get related artists
 	related_artists = sp.artist_related_artists(artist_uri)
+
+	#Get artists for recommendations
 	artist_to_recommend = related_artists["artists"]
+
 	#Make a list of related artist ids
 	artist_recommendations = []
 	for artists in artist_to_recommend:
-	        artist_recommendations.append(artists["id"])
+		artist_recommendations.append(artists["id"])
 	        
-	artist_top5 = artist_recommendations[:5]
-	artist_top10 = artist_recommendations[6:10]
-	artist_top15 = artist_recommendations[11:15]
-	artist_top20 = artist_recommendations[16:20]
+	# Grab slices of artist IDs to feed into get_artist_recommendations function
+	artist_top3 = artist_recommendations[:3]
+	artist_top6 = artist_recommendations[4:6]
+	artist_top9 = artist_recommendations[7:9]
+	artist_top12 = artist_recommendations[10:12]
+	artist_top15 = artist_recommendations[13:15]
+	artist_top18 = artist_recommendations[16:18]
+	artist_top21 = artist_recommendations[19:21]
 
-	# Define function for getting recommendations based on related artists (max 5 artist seeds)
-	def get_artist_recommendations(artist):
-		recommendations = sp.recommendations(seed_artists = artist, limit=100)
-		var = recommendations['tracks']
-		list_of_100_recommendations = []
-		for track in var:
-			list_of_100_recommendations.append(track['id'])
+	# Define a function to check the audio features of multiple tracks from recommendations
+	def check_audio_features(list_of_tracks):
 		# Create a list of audio features for 100 recommended tracks
-		multiple_features = sp.audio_features(tracks=list_of_100_recommendations)
+		multiple_features = sp.audio_features(tracks=list_of_tracks)
 		for item in multiple_features:
+			# Get tempo and track id from each individual track in list
 			tempo = item['tempo']
 			track_id = item['id']
-			# If tempo is within range, add id to the playlist
-			if (tempo > (desired_bpm-3) and tempo < (desired_bpm+3)) or (tempo*2 > (desired_bpm-3) and tempo*2 < (desired_bpm+3)):
-				list_of_tracks.append(track_id)
+			# Run tempo_check function to see if track tempo fits required BPM
+			tempo_check(tempo)
+
+	# Define functions to get recommendations based on seed tracks (maximum 5 seed tracks)
+	def get_recommendations(tracks):
+		# Get recommendations based on artist top tracks
+		recommendations = sp.recommendations(seed_tracks = tracks, limit=100)
+		recommended_tracks = recommendations['tracks']
+		list_of_100_recommendations = []
+		#Create a list of 100 recommended tracks (100 is max seed for audio_features)
+		for track in recommended_tracks:
+			list_of_100_recommendations.append(track['id'])
+		check_audio_features(list_of_100_recommendations)
+
+	# Define functions to get recommendations based on seed artists (maximum 5 seed artists)
+	def get_artist_recommendations(artist):
+		# Get recommendations based on artist top tracks
+		recommendations = sp.recommendations(seed_artists = artist, limit=100)
+		recommended_tracks = recommendations['tracks']
+		list_of_100_recommendations = []
+		#Create a list of 100 recommended tracks (100 is max seed for audio_features)
+		for track in recommended_tracks:
+			list_of_100_recommendations.append(track['id'])
+		check_audio_features(list_of_100_recommendations)
 
 
+	# Feed track IDs into functions 
+	get_recommendations(top3)
 	get_recommendations(top5)
+	get_recommendations(top7)
 	get_recommendations(top10)
-	get_artist_recommendations(artist_top5)
-	get_artist_recommendations(artist_top10)
+
+	# Feed artist IDs into functions 
+	get_artist_recommendations(artist_top3)
+	get_artist_recommendations(artist_top6)
+	get_artist_recommendations(artist_top9)
+	get_artist_recommendations(artist_top12)
 	get_artist_recommendations(artist_top15)
-	get_artist_recommendations(artist_top20)
+	get_artist_recommendations(artist_top18)
+	get_artist_recommendations(artist_top21)
 
 	
 	# Add list of tracks to playlist
