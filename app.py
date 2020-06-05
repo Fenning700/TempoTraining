@@ -3,35 +3,25 @@ import spotipy
 import spotipy.util as util
 import json
 import requests
-import os
-from dotenv import load_dotenv
 import logging
 import secrets
 import string
 import base64
 from urllib.parse import urlencode
 
-project_folder = os.path.expanduser('/tempotraining')
-load_dotenv(os.path.join(project_folder, '.env'))
-
 app = Flask(__name__)
-app.secret_key = os.getenv('SECRET_KEY')
-
 
 # DO NOT PUBLISH CREDENTIALS!
-CLIENT_ID = os.getenv('CLIENT_ID')
-CLIENT_SECRET = os.getenv('CLIENT_SECRET')
-REDIRECT_URI = os.getenv('REDIRECT_URI')
-
+CLIENT_ID = 'YOUR_CLIENT_ID'
+CLIENT_SECRET = 'YOUR_CLIENT_SECRET'
+REDIRECT_URI = 'YOUR_REDIRECTT_URI'
+app.secret_key = 'YOUR_SECRET_KEY'
 client_creds = f"{CLIENT_ID}:{CLIENT_SECRET}"
 client_creds_b64 = base64.b64encode(client_creds.encode())
-
-
 
 # Spotify Endpoints
 AUTH_URL = 'https://accounts.spotify.com/authorize'
 TOKEN_URL = 'https://accounts.spotify.com/api/token'
-
 
 @app.route("/")
 def index():
@@ -40,7 +30,6 @@ def index():
 @app.route("/<login>")
 # Log in user and authorize app use
 def login(login):
-	
 
 	# Create a random string for state
 	state = ''.join(
@@ -162,7 +151,7 @@ def show_playlist():
 		# Check to see if track tempo fits required BPM 
 		if (tempo > (desired_bpm-2) and tempo < (desired_bpm+2)) or (tempo*2 > (desired_bpm-2) and tempo*2 < (desired_bpm+2)):
 			# Check if track already on list
-			if track_id not in playlist:
+			if track_id not in list_of_tracks:
 				list_of_tracks.append(track_id)
 
 	# Grab slices of track IDs to feed into get_recommendations function
@@ -208,7 +197,7 @@ def show_playlist():
 			# Check to see if track tempo fits required BPM 
 			if (tempo > (desired_bpm-2) and tempo < (desired_bpm+2)) or (tempo*2 > (desired_bpm-2) and tempo*2 < (desired_bpm+2)):
 				# Check if track already on list
-				if track_id not in playlist:
+				if track_id not in list_of_tracks:
 					list_of_tracks.append(track_id)
 
 	# Define functions to get recommendations based on seed artists (maximum 5 seed artists)
@@ -227,7 +216,7 @@ def show_playlist():
 			# Check to see if track tempo fits required BPM 
 			if (tempo > (desired_bpm-2) and tempo < (desired_bpm+2)) or (tempo*2 > (desired_bpm-2) and tempo*2 < (desired_bpm+2)):
 				# Check if track already on list
-				if track_id not in playlist:
+				if track_id not in list_of_tracks:
 					list_of_tracks.append(track_id)
 
 
