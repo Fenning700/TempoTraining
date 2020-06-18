@@ -127,7 +127,7 @@ def show_playlist():
 	username = user_data['id']
 
 	# Create Playlist
-	playlist_name = "Tempo training, inspired by " + artist_name
+	playlist_name = "Tempo training " + str(desired_bpm) + ", inspired by " + artist_name
 	sp.trace = False
 	playlist = sp.user_playlist_create(username, playlist_name)
 	playlist_id = playlist["id"]
@@ -149,7 +149,7 @@ def show_playlist():
 		tempo = item['tempo']
 		track_id = item['id']
 		# Check to see if track tempo fits required BPM 
-		if (tempo > (desired_bpm-2) and tempo < (desired_bpm+2)) or (tempo*2 > (desired_bpm-2) and tempo*2 < (desired_bpm+2)):
+		if (tempo > (desired_bpm-2) and tempo < (desired_bpm+2)) or (tempo*2 > (desired_bpm-2) and tempo*2 < (desired_bpm+2)) or (tempo/2 > (desired_bpm-2) and tempo/2 < (desired_bpm+2)):
 			# Check if track already on list
 			if track_id not in list_of_tracks:
 				list_of_tracks.append(track_id)
@@ -195,7 +195,7 @@ def show_playlist():
 			tempo = item['tempo']
 			track_id = item['id']
 			# Check to see if track tempo fits required BPM 
-			if (tempo > (desired_bpm-2) and tempo < (desired_bpm+2)) or (tempo*2 > (desired_bpm-2) and tempo*2 < (desired_bpm+2)):
+			if (tempo > (desired_bpm-2) and tempo < (desired_bpm+2)) or (tempo*2 > (desired_bpm-2) and tempo*2 < (desired_bpm+2)) or (tempo/2 > (desired_bpm-2) and tempo/2 < (desired_bpm+2)):
 				# Check if track already on list
 				if track_id not in list_of_tracks:
 					list_of_tracks.append(track_id)
@@ -214,7 +214,7 @@ def show_playlist():
 			tempo = item['tempo']
 			track_id = item['id']
 			# Check to see if track tempo fits required BPM 
-			if (tempo > (desired_bpm-2) and tempo < (desired_bpm+2)) or (tempo*2 > (desired_bpm-2) and tempo*2 < (desired_bpm+2)):
+			if (tempo > (desired_bpm-2) and tempo < (desired_bpm+2)) or (tempo*2 > (desired_bpm-2) and tempo*2 < (desired_bpm+2)) or (tempo/2 > (desired_bpm-2) and tempo/2 < (desired_bpm+2)):
 				# Check if track already on list
 				if track_id not in list_of_tracks:
 					list_of_tracks.append(track_id)
